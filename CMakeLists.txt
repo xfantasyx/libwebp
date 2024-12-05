@@ -790,9 +790,17 @@ install(
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-set(ConfigPackageLocation ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake/)
+set(ConfigPackageLocation cmake CACHE
+    STRING "Installation directory for cmake files")
 install(EXPORT ${PROJECT_NAME}Targets NAMESPACE ${PROJECT_NAME}::
         DESTINATION ${ConfigPackageLocation})
+
+list(APPEND INSTALLED_LIBRARIES sharpyuv)
+        
+set(WEBP_INSTALL_LIBS)
+foreach(_target_name ${INSTALLED_LIBRARIES})
+  list(APPEND WEBP_INSTALL_LIBS ${PROJECT_NAME}::${_target_name})
+endforeach()
 
 # Create the CMake version file.
 include(CMakePackageConfigHelpers)
